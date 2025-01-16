@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
+import ParticlesComponent from '../../components/particles';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -43,7 +42,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
-        navigate('/protected');
+        navigate('/dashboard');
       } else {
         const errorData = await response.json();
         setError(errorData.detail || 'Authentication failed!');
@@ -56,6 +55,7 @@ function Login() {
 
   return (
     <div style={styles.container}>
+      <ParticlesComponent id="particles"/>
       <form onSubmit={handleSubmit} style={styles.form}>
         <img 
           src="/images/logo.png" 
@@ -105,7 +105,7 @@ const styles = {
     backdropFilter: 'blur(10px)',
     textAlign: 'center',
     color: '#fff',
-    width: '300px',
+    width: '350px',
   },
   logo: {
     width: '250px',
@@ -123,16 +123,16 @@ const styles = {
     fontSize: '14px',
   },
   input: {
-    width: '100%',
+    width: '280px',
     padding: '10px',
     border: 'none',
     borderRadius: '5px',
     background: 'rgba(147, 171, 226, 0.2)',
-    color: '#fff',
+    color: '#000000',
     fontSize: '16px',
   },
   button: {
-    width: '320px',
+    width: '250px',
     padding: '10px',
     border: 'none',
     borderRadius: '5px',

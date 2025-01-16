@@ -9,8 +9,6 @@ from database import SessionLocal, engine
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-
-
 app = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -43,23 +41,21 @@ SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-
 class UserCreate(BaseModel):
     username: str
     password: str
-
+    fullname: str 
 
 @app.get("/")
 async def root():
     return {"message": "Bienvenido a mi API de GMTI"}
-
 
 def get_user_by_username(db: Session, username: str):
     return db.query(User).filter(User.username == username).first()
 
 def create_user(db: Session, user: UserCreate):
     hashed_password = pwd_context.hash(user.password)
-    db_user = User(username=user.username, hashed_password=hashed_password)
+    db_user = User(username=user.username, hashed_password=hashed_password, fullname=user.fullname)
     db.add(db_user)
     db.commit()
     return "complete"
@@ -106,7 +102,6 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -121,3 +116,16 @@ def verify_token(token: str = Depends(oauth2_scheme)):
 async def verify_user_token(token: str):
     verify_token(token=token)
     return {"message": "Token is valid"}
+
+@app.get("/users")
+def get_users(db: Session = Depends(get_db)):
+    users = db.query(User).all()
+    return [{"id": user.id, "username": user.username, "fullname": user.fullname} for user in users]
+
+@app.get("/user/{username}")
+def get_user_by_username_endpoint(username: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"username": user.username, "fullname": user.fullname}
+
