@@ -41,6 +41,7 @@ body {
 .facturas-table {
   width: 100%;
   overflow-x: auto;
+  font-size: 12px;
 }
 
 .facturas-table table {
@@ -53,7 +54,7 @@ body {
 
 .facturas-table th,
 .facturas-table td {
-  padding: 10px 15px;
+  padding: 5px 10px;
   text-align: left;
   border: 1px solid #ddd;
 }

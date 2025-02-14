@@ -1,64 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./Sidebar.css"; // Tu archivo de estilos para el sidebar
+import "./Sidebar.css";
+import {
+  BsSearch,
+} from "react-icons/bs";
+import {
+  FcStatistics,
+  FcBullish,
+  FcPositiveDynamic,
+  FcCancel,
+  FcHighPriority,
+  FcSupport
+} from "react-icons/fc";
 
 const Sidebar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <div className="sidebar">
+    <nav className={`sidebar ${isCollapsed ? "close" : ""}`}>
       <header>
         <div className="image-text">
-          <div className="image">
-            <img src="/logo.png" alt="Logo" />
-          </div>
-          <div className="logo-text">
-            <span className="name">Stella Army</span>
-            <span className="profession">Web Developer</span>
+          <span className="image">
+            <img
+              src="/images/profile.png"
+              alt="Profile"
+            />
+          </span>
+          <div className="text logo-text">
+            <span className="name">{!isCollapsed && "Stella Army"}</span>
+            <span className="profession">{!isCollapsed && "Web Developer"}</span>
           </div>
         </div>
-        <i className="toggle bx bx-chevron-right"></i>
+        <i
+          className={`toggle bx ${isCollapsed ? "bx-chevron-right" : "bx-chevron-left"}`}
+          onClick={toggleSidebar}
+        ></i>
       </header>
 
       <div className="menu-bar">
-        <ul className="menu-links">
-          <li>
-            <NavLink to="/dashboard" activeClassName="active">
-              <i className="bx bx-grid-alt"></i>
-              <span className="text">Dashboard</span>
+        <div className="menu">
+          <li className="search-box">
+            <BsSearch className="icon" />
+            {!isCollapsed && <input type="text" placeholder="Search..." />}
+          </li>
+
+          <ul className="menu-links">
+            <li className="nav-link">
+              <NavLink to="/dashboard">
+                <FcStatistics className="icon" />
+                <span className="text nav-text">Dashboard</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to="/facturas">
+                <FcBullish className="icon" />
+                <span className="text nav-text">Facturas</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to="/servicios">
+                <FcSupport className="icon" />
+                <span className="text nav-text">Servicios</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to="/ventas">
+                <FcPositiveDynamic className="icon" />
+                <span className="text nav-text">Ventas</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to="/anulados">
+                <FcCancel className="icon" />
+                <span className="text nav-text">Anulados</span>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+
+        <div className="bottom-content">
+          <li className="nav-link">
+            <NavLink to="/">
+              <FcHighPriority className="icon" />
+              <span className="text nav-text">Logout</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/facturas" activeClassName="active">
-              <i className="bx bx-file"></i>
-              <span className="text">Facturas</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/servicios" activeClassName="active">
-              <i className="bx bx-cog"></i>
-              <span className="text">Servicios</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/ventas" activeClassName="active">
-              <i className="bx bx-shopping-bag"></i>
-              <span className="text">Ventas</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/anulados" activeClassName="active">
-              <i className="bx bx-trash"></i>
-              <span className="text">Anulados</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/" activeClassName="active">
-              <i className="bx bx-log-out"></i>
-              <span className="text">Logout</span>
-            </NavLink>
-          </li>
-        </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

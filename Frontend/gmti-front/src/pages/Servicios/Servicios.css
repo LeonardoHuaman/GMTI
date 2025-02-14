@@ -1,0 +1,26 @@
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .facturas-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .facturas-table th,
+  .facturas-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .facturas-table th {
+    background-color: #1b6ca6;
+    color: white;
+  }
+  
+  .facturas-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
